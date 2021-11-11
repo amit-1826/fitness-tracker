@@ -1,5 +1,5 @@
 <section>
-  <form fxLayout="column" fxLayoutAlign="center center" #form="ngForm" (ngSubmit)="onSubmit(form)" >
+  <form fxLayout="column" fxLayoutGap="10px" fxLayoutAlign="center center" #form="ngForm" (ngSubmit)="onSubmit(form)" >
     <mat-form-field>
       <input
         type="email"
@@ -28,12 +28,17 @@
     </mat-form-field>
 
     <mat-form-field appearance="fill" class="example-form-field">
-      <input matInput [matDatepicker]="picker" placeholder="Birth Date">
-      <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+      <input matInput [max]="maxDate" [matDatepicker]="picker" placeholder="Date of birth" ngModel required name="dob">
+      <mat-datepicker-toggle matSuffix [for]="picker">
+        <mat-icon matDatepickerToggleIcon>keyboard_arrow_down</mat-icon>
+      </mat-datepicker-toggle>
+<!--      <mat-datepicker #picker [startView]="'month'"></mat-datepicker>-->
       <mat-datepicker #picker></mat-datepicker>
     </mat-form-field>
 
-    <button type="submit" color="primary" mat-raised-button>Submit</button>
+    <mat-checkbox color="primary" labelPosition="after" required ngModel name="agree"> I agree to terms and conditions.</mat-checkbox>
+
+    <button type="submit" color="primary" mat-raised-button [disabled]="form.invalid" >Submit</button>
   </form>
 </section>
 
