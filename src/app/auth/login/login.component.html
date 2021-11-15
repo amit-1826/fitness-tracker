@@ -1,5 +1,5 @@
 <section>
-  <form #loginForm="ngForm" fxLayoutAlign="center center" fxLayout="column" (ngSubmit)="onLogin()">
+  <form #loginForm="ngForm" fxLayoutAlign="center center" fxLayout="column" (ngSubmit)="onLogin(loginForm)">
     <mat-form-field>
       <input
         name="email"
@@ -27,6 +27,6 @@
       <mat-error *ngIf="passwordInput.hasError('required')">Password is required.</mat-error>
     </mat-form-field>
 
-    <button [disabled]="loginForm.invalid" mat-raised-button color="primary">Login</button>
+    <button [disabled]="loginForm.invalid" mat-raised-button color="primary"  >Login</button>
   </form>
 </section>
