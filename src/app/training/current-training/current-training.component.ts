@@ -27,21 +27,26 @@ export class CurrentTrainingComponent implements OnInit {
     }, 1000);
   }
 
-  onStop() {
-    clearInterval(this.timer);
-    this.dialog.open(CancelTrainingDialogComponent, {
-      data: {
-        progress: this.progress
-      }
-    }).afterClosed()
-      .subscribe((res) => {
-        if (res && this.timer) {
-          clearInterval(this.timer);
-          this.onTrainingExit.emit();
-        } else {
-          this.startOrResumeTimer();
+  onStopOrStartAgain() {
+    if (this.progress < 100) {
+      clearInterval(this.timer);
+      this.dialog.open(CancelTrainingDialogComponent, {
+        data: {
+          progress: this.progress
         }
-      })
+      }).afterClosed()
+        .subscribe((res) => {
+          if (res && this.timer) {
+            clearInterval(this.timer);
+            this.onTrainingExit.emit();
+          } else {
+            this.startOrResumeTimer();
+          }
+        })
+    } else {
+      this.progress = 0;
+      this.startOrResumeTimer();
+    }
   }
 
 }
