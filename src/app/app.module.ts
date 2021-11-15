@@ -16,6 +16,7 @@ import {FormsModule} from "@angular/forms";
 import { HeaderComponent } from './navigation/header/header.component';
 import { SidenavComponent } from './navigation/sidenav/sidenav.component';
 import { TrainingComponent } from './training/training.component';
+import { CancelTrainingDialogComponent } from './training/current-training/cancel-training-dialog/cancel-training-dialog.component';
 
 @NgModule({
   declarations: [
@@ -28,7 +29,8 @@ import { TrainingComponent } from './training/training.component';
     PastTrainingsComponent,
     HeaderComponent,
     SidenavComponent,
-    TrainingComponent
+    TrainingComponent,
+    CancelTrainingDialogComponent
   ],
   imports: [
     BrowserModule,
