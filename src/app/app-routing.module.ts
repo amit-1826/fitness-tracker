@@ -5,6 +5,7 @@ import {LoginComponent} from "./auth/login/login.component";
 import {SignupComponent} from "./auth/signup/signup.component";
 import {CurrentTrainingComponent} from "./training/current-training/current-training.component";
 import {TrainingComponent} from "./training/training.component";
+import {AuthGuard} from "./auth/auth.guard";
 
 const routes: Routes = [
   {
@@ -17,12 +18,13 @@ const routes: Routes = [
     path: 'signup', component: SignupComponent
   },
   {
-    path: 'training', component: TrainingComponent
+    path: 'training', component: TrainingComponent, canActivate: [AuthGuard]
   }
 ];
 
 @NgModule({
   imports: [RouterModule.forRoot(routes)],
-  exports: [RouterModule]
+  exports: [RouterModule],
+  providers: [AuthGuard]
 })
 export class AppRoutingModule { }
