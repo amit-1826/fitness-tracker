@@ -14,7 +14,7 @@ export class TrainingService {
     {id: 'sit-ups', name: 'Sit Ups', duration: 180, calories: 24},
     {id: 'burpees', name: 'Burpees', duration: 120, calories: 13},
   ]
-  currentTraining: any;
+  runningExercise: any;
 
   constructor() {
   }
@@ -24,16 +24,20 @@ export class TrainingService {
   }
 
   startTraining(id: string) {
-    this.currentTraining = this.availableExercise.find((ex) => ex.id == id);
-    this.trainingChanged.next(this.currentTraining);
+    this.runningExercise = this.availableExercise.find((ex) => ex.id == id);
+    this.trainingChanged.next(this.runningExercise);
   }
 
   getCurrentExercise() {
-    return {...this.currentTraining};
+    return {...this.runningExercise};
   }
 
-  stopTraining() {
-    this.currentTraining = undefined;
-    this.trainingChanged.next(this.currentTraining);
+  cancelExercise() {
+    this.runningExercise = undefined;
+    this.trainingChanged.next(this.runningExercise);
+  }
+
+  completeExercise() {
+    
   }
 }
