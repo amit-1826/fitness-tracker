@@ -11,7 +11,6 @@ import {Subscription} from "rxjs";
 })
 export class CurrentTrainingComponent implements OnInit, OnDestroy {
 
-  @Output() onTrainingExit: EventEmitter<any> = new EventEmitter<any>();
   progress = 0;
   timer: number;
   constructor(private dialog: MatDialog, private trainingService: TrainingService) { }
@@ -41,7 +40,6 @@ export class CurrentTrainingComponent implements OnInit, OnDestroy {
         .subscribe((res) => {
           if (res && this.timer) {
             clearInterval(this.timer);
-            this.onTrainingExit.emit();
           } else {
             this.startOrResumeTimer();
           }
