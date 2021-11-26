@@ -14,7 +14,8 @@ export class TrainingService {
     {id: 'sit-ups', name: 'Sit Ups', duration: 180, calories: 24},
     {id: 'burpees', name: 'Burpees', duration: 120, calories: 13},
   ]
-  runningExercise: any;
+  private runningExercise: any;
+  private exercises: ExerciseModel[] = [];
 
   constructor() {
   }
@@ -32,12 +33,15 @@ export class TrainingService {
     return {...this.runningExercise};
   }
 
-  cancelExercise() {
+  cancelExercise(progress: number) {
+    this.exercises.push({...this.runningExercise, date: new Date(), state: 'cancelled', duration: (this.runningExercise.duration * 100) / 100, calories: (this.runningExercise.duration * 100) / 100});
     this.runningExercise = undefined;
     this.trainingChanged.next(this.runningExercise);
   }
 
   completeExercise() {
-    
+    this.exercises.push({...this.runningExercise, date: new Date(), state: 'completed'});
+    this.runningExercise = undefined;
+    this.trainingChanged.next(this.runningExercise);
   }
 }
