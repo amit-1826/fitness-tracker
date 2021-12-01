@@ -1,6 +1,6 @@
 import {Injectable} from "@angular/core";
 import {ExerciseModel} from "./exercise.model";
-import {Subject} from "rxjs";
+import {Observable, of, Subject} from "rxjs";
 
 @Injectable({
   providedIn: 'root'
@@ -20,7 +20,7 @@ export class TrainingService {
   constructor() {
   }
 
-  getAvailableExercises() {
+  getAvailableExercises(): ExerciseModel[] {
     return [...this.availableExercise];
   }
 
@@ -29,7 +29,7 @@ export class TrainingService {
     this.trainingChanged.next(this.runningExercise);
   }
 
-  getCurrentExercise() {
+  getCurrentExercise(): ExerciseModel {
     return {...this.runningExercise};
   }
 
@@ -45,7 +45,7 @@ export class TrainingService {
     this.trainingChanged.next(this.runningExercise);
   }
 
-  getPastExercises() {
+  getPastExercises(): ExerciseModel[] {
     return this.exercises.slice();
   }
 }
