@@ -25,7 +25,7 @@ export class TrainingService {
   }
 
   startTraining(id: string) {
-    this.runningExercise = this.availableExercise.find((ex) => ex.id == id);
+    this.runningExercise = this.availableExercise.find((ex: ExerciseModel) => ex.id == id);
     this.trainingChanged.next(this.runningExercise);
   }
 
@@ -34,7 +34,7 @@ export class TrainingService {
   }
 
   cancelExercise(progress: number) {
-    this.exercises.push({...this.runningExercise, date: new Date(), state: 'cancelled', duration: (this.runningExercise.duration * 100) / 100, calories: (this.runningExercise.duration * 100) / 100});
+    this.exercises.push({...this.runningExercise, date: new Date(), state: 'cancelled', duration: this.runningExercise.duration * (progress / 100), calories: this.runningExercise.duration * (progress / 100)});
     this.runningExercise = undefined;
     this.trainingChanged.next(this.runningExercise);
   }
