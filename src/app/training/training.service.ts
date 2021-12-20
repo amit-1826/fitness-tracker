@@ -1,6 +1,6 @@
 import {Injectable} from "@angular/core";
 import {ExerciseModel} from "./exercise.model";
-import {Observable, of, Subject} from "rxjs";
+import {Observable, of, Subject, Subscription} from "rxjs";
 import { map } from 'rxjs/operators';
 import { AngularFirestore } from "@angular/fire/compat/firestore";
 
@@ -14,12 +14,13 @@ export class TrainingService {
   pastExercisesChanged: Subject<ExerciseModel[]> = new Subject<ExerciseModel[]>();
   private availableExercise: ExerciseModel[] = [];
   private runningExercise: any;
+  private firebaseSubscriptions: Subscription[] = [];
 
   constructor(private firestore: AngularFirestore) {
   }
 
   fetchAvailableExercises() {
-    this.firestore.collection('availableExercises')
+    this.firebaseSubscriptions.push(this.firestore.collection('availableExercises')
     .snapshotChanges()
     .pipe(
       map((docArray) => {
@@ -36,7 +37,7 @@ export class TrainingService {
     ).subscribe((exercises: ExerciseModel[]) => {
       this.availableExercise = exercises;
       this.exercisesChanged.next(this.availableExercise);
-    })
+    }));
   }
 
   startTraining(id: string) {
@@ -61,10 +62,19 @@ export class TrainingService {
   }
 
   fetchPastExercises(){
-    this.firestore.collection('pastExercises').valueChanges()
+    this.firebaseSubscriptions.push(this.firestore.collection('pastExercises').valueChanges()
     .subscribe((exercises: any) => {
       this.pastExercisesChanged.next(exercises);
-    });
+    }));
+  }
+
+  // This function is called from auth service
+  cancelSubscriptions() {
+    this.firebaseSubscriptions.forEach((subscription: Subscription) => {
+      if (subscription) {
+        subscription.unsubscribe();
+      }
+    })
   }
 
   private storeExercisesToDb(exercise: ExerciseModel) {
