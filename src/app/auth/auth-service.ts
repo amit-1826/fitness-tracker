@@ -3,48 +3,75 @@ import {AuthData} from "./auth.model";
 import {Subject} from "rxjs";
 import {Injectable} from "@angular/core";
 import {Router} from "@angular/router";
+import {AngularFireAuth} from "@angular/fire/compat/auth";
+import {TrainingService} from "../training/training.service";
 
 @Injectable({
   providedIn: 'root'
 })
 export class AuthService {
 
-  private user: User | null;
+  isAuthenticated: boolean = false;
   authChange: Subject<boolean> = new Subject<boolean>();
 
-  constructor(private router: Router) {
+  constructor(private router: Router, private angularFireAuth: AngularFireAuth,
+              private trainingService: TrainingService) {
+  }
+
+  initAuth() {
+    this.angularFireAuth.authState.subscribe((user) => {
+      if (user) {
+        this.isAuthenticated = true;
+        this.authChange.next(true);
+        this.navigate('/training');
+      } else {
+        this.trainingService.cancelSubscriptions();
+        this.isAuthenticated = false;
+        this.authChange.next(false);
+        this.navigate('login');
+      }
+    })
   }
 
   login(authData: AuthData) {
-    this.user = {
+    const user = {
       email: authData.email,
-      userId: Math.round(Math.random() * 1000).toString()
+      password: authData.password
     }
-    this.authSuccessfull();
+    this.angularFireAuth.signInWithEmailAndPassword(user.email, user.password)
+      .then((result) => {
+        console.log(result);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
 
   }
 
   register(authData: AuthData) {
-    this.user = {
+    const user = {
       email: authData.email,
-      userId: Math.round(Math.random() * 1000).toString()
+      password: authData.password
     }
-    this.authSuccessfull();
 
-  }
-
-  authSuccessfull() {
-    this.authChange.next(true);
-    this.router.navigate(['/training'])
+    this.angularFireAuth.createUserWithEmailAndPassword(user.email, user.password)
+      .then((result) => {
+        console.log(result);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
   }
 
   isAuth() {
-    return this.user != null;
+    return this.isAuthenticated;
   }
 
   logout() {
-    this.user = null;
-    this.authChange.next(false);
-    this.router.navigate(['/login'])
+    this.angularFireAuth.signOut();
+  }
+
+  navigate(route: string) {
+    this.router.navigate([route])
   }
 }
