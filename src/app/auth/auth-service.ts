@@ -5,17 +5,19 @@ import {Injectable} from "@angular/core";
 import {Router} from "@angular/router";
 import {AngularFireAuth} from "@angular/fire/compat/auth";
 import {TrainingService} from "../training/training.service";
+import {MatSnackBar} from "@angular/material/snack-bar";
+import {UiService} from "../services/uiService";
 
-@Injectable({
-  providedIn: 'root'
-})
+@Injectable()
 export class AuthService {
 
   isAuthenticated: boolean = false;
   authChange: Subject<boolean> = new Subject<boolean>();
 
   constructor(private router: Router, private angularFireAuth: AngularFireAuth,
-              private trainingService: TrainingService) {
+              private trainingService: TrainingService,
+              private uiService: UiService,
+              private matSnackBar: MatSnackBar) {
   }
 
   initAuth() {
@@ -33,22 +35,31 @@ export class AuthService {
     })
   }
 
+  emitLoaderEvent(event: boolean) {
+    this.uiService.showLoaderEvent.next(event);
+  }
+
   login(authData: AuthData) {
+    this.emitLoaderEvent(true);
     const user = {
       email: authData.email,
       password: authData.password
     }
     this.angularFireAuth.signInWithEmailAndPassword(user.email, user.password)
       .then((result) => {
-        console.log(result);
+        this.emitLoaderEvent(false);
       })
       .catch((error) => {
-        console.log(error);
+        this.emitLoaderEvent(false);
+        this.matSnackBar.open(error.message, undefined, {
+          duration: 3000
+        });
       });
 
   }
 
   register(authData: AuthData) {
+    this.emitLoaderEvent(true);
     const user = {
       email: authData.email,
       password: authData.password
@@ -56,10 +67,13 @@ export class AuthService {
 
     this.angularFireAuth.createUserWithEmailAndPassword(user.email, user.password)
       .then((result) => {
-        console.log(result);
+        this.emitLoaderEvent(false);
       })
       .catch((error) => {
-        console.log(error);
+        this.emitLoaderEvent(false);
+        this.matSnackBar.open(error.message, undefined, {
+          duration: 3000
+        });
       });
   }
 

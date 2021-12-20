@@ -38,7 +38,10 @@
 
     <mat-checkbox color="primary" labelPosition="after" required ngModel name="agree"> I agree to terms and conditions.</mat-checkbox>
 
-    <button type="submit" color="primary" mat-raised-button [disabled]="form.invalid" >Submit</button>
+    <button [disabled]="showLoader || form.invalid" mat-raised-button color="primary"  >
+      <span *ngIf="!showLoader" >SignUp</span>
+      <mat-spinner *ngIf="showLoader" [diameter]="20"></mat-spinner>
+    </button>
   </form>
 </section>
 
