@@ -1,11 +1,9 @@
-import {User} from './user.model';
 import {AuthData} from "./auth.model";
 import {Subject} from "rxjs";
 import {Injectable} from "@angular/core";
 import {Router} from "@angular/router";
 import {AngularFireAuth} from "@angular/fire/compat/auth";
 import {TrainingService} from "../training/training.service";
-import {MatSnackBar} from "@angular/material/snack-bar";
 import {UiService} from "../services/uiService";
 
 @Injectable()
@@ -16,8 +14,7 @@ export class AuthService {
 
   constructor(private router: Router, private angularFireAuth: AngularFireAuth,
               private trainingService: TrainingService,
-              private uiService: UiService,
-              private matSnackBar: MatSnackBar) {
+              private uiService: UiService) {
   }
 
   initAuth() {
@@ -51,11 +48,8 @@ export class AuthService {
       })
       .catch((error) => {
         this.emitLoaderEvent(false);
-        this.matSnackBar.open(error.message, undefined, {
-          duration: 3000
-        });
+        this.uiService.showSnackbar(error.message, undefined, 3000);
       });
-
   }
 
   register(authData: AuthData) {
@@ -71,9 +65,7 @@ export class AuthService {
       })
       .catch((error) => {
         this.emitLoaderEvent(false);
-        this.matSnackBar.open(error.message, undefined, {
-          duration: 3000
-        });
+        this.uiService.showSnackbar(error.message, undefined, 3000);
       });
   }
 

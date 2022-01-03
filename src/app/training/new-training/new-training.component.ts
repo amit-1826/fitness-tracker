@@ -14,7 +14,7 @@ import {UiService} from "../../services/uiService";
 })
 export class NewTrainingComponent implements OnInit, OnDestroy {
 
-  availableExercises: ExerciseModel[];
+  availableExercises: ExerciseModel[] | null;
   showLoader = false;
   loaderSubscription: Subscription;
   constructor(private trainingService: TrainingService, private uiService: UiService) { }
@@ -27,10 +27,14 @@ export class NewTrainingComponent implements OnInit, OnDestroy {
   }
 
   getAvailableExercises() {
-    this.trainingService.fetchAvailableExercises();
-    this.trainingService.exercisesChanged.subscribe((exercises: ExerciseModel[]) => {
+    this.fetchExercises();
+    this.trainingService.exercisesChanged.subscribe((exercises: ExerciseModel[] | null) => {
       this.availableExercises = exercises;
     })
+  }
+
+  fetchExercises() {
+    this.trainingService.fetchAvailableExercises();
   }
 
   onStart(form: NgForm) {
