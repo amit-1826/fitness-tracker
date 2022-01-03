@@ -11,7 +11,7 @@ import {UiService} from "../services/uiService";
 export class TrainingService {
 
   trainingChanged: Subject<ExerciseModel> = new Subject<ExerciseModel>();
-  exercisesChanged: Subject<ExerciseModel[]> = new Subject<ExerciseModel[]>();
+  exercisesChanged: Subject<ExerciseModel[] | null> = new Subject<ExerciseModel[] | null>();
   pastExercisesChanged: Subject<ExerciseModel[]> = new Subject<ExerciseModel[]>();
   private availableExercise: ExerciseModel[] = [];
   private runningExercise: any;
@@ -40,7 +40,11 @@ export class TrainingService {
       this.uiService.showLoaderEvent.next(false);
       this.availableExercise = exercises;
       this.exercisesChanged.next(this.availableExercise);
-    }));
+    }, (error) => {
+      this.uiService.showSnackbar('Fetching exercises failed. Please try again later.', undefined, 3000);
+      this.exercisesChanged.next(null);
+      this.uiService.showLoaderEvent.next(false);
+      }));
   }
 
   startTraining(id: string) {
