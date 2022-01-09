@@ -5,9 +5,7 @@ import { map } from 'rxjs/operators';
 import { AngularFirestore } from "@angular/fire/compat/firestore";
 import {UiService} from "../services/uiService";
 
-@Injectable({
-  providedIn: 'root'
-})
+@Injectable()
 export class TrainingService {
 
   trainingChanged: Subject<ExerciseModel> = new Subject<ExerciseModel>();
