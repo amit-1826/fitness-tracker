@@ -10,11 +10,13 @@ import { SidenavComponent } from './navigation/sidenav/sidenav.component';
 import { environment } from 'src/environments/environment';
 import { AngularFireModule } from '@angular/fire/compat';
 import { AngularFirestoreModule } from '@angular/fire/compat/firestore';
-import {AngularFireAuthModule} from "@angular/fire/compat/auth";
 import {UiService} from "./services/uiService";
 import {AuthModule} from "./auth/auth.module";
 import {TrainingModule} from "./training/training.module";
 import {MaterialModule} from "./material.module";
+import { AuthService } from './auth/auth-service';
+import { TrainingService } from './training/training.service';
+import { FlexLayoutModule } from '@angular/flex-layout';
 
 @NgModule({
   declarations: [
@@ -27,14 +29,14 @@ import {MaterialModule} from "./material.module";
     BrowserModule,
     AppRoutingModule,
     BrowserAnimationsModule,
+    FlexLayoutModule,
     AngularFireModule.initializeApp(environment.firebase),
     AngularFirestoreModule,
-    AngularFireAuthModule,
     AuthModule,
     TrainingModule,
     MaterialModule
   ],
-  providers: [UiService],
+  providers: [UiService, AuthService, TrainingService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
