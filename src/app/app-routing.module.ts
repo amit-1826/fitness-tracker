@@ -12,13 +12,9 @@ const routes: Routes = [
     path: '', component: WelcomeComponent
   },
   {
-    path: 'login', component: LoginComponent
-  },
-  {
-    path: 'signup', component: SignupComponent
-  },
-  {
-    path: 'training', component: TrainingComponent, canActivate: [AuthGuard]
+    path: 'training',
+    loadChildren: () => import('./training/training.module').then((module) => module.TrainingModule) ,
+    canLoad: [AuthGuard]
   }
 ];
 

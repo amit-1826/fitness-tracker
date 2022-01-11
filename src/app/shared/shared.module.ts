@@ -10,7 +10,6 @@ import {CommonModule} from "@angular/common";
     FlexLayoutModule,
     FormsModule,
     CommonModule
-
   ],
   exports: [
     MaterialModule,
