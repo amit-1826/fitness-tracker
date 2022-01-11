@@ -17,6 +17,7 @@ import {MaterialModule} from "./material.module";
 import { AuthService } from './auth/auth-service';
 import { TrainingService } from './training/training.service';
 import { FlexLayoutModule } from '@angular/flex-layout';
+import {AuthRoutingModule} from "./auth/auth-routing.module";
 
 @NgModule({
   declarations: [
@@ -34,7 +35,8 @@ import { FlexLayoutModule } from '@angular/flex-layout';
     AngularFirestoreModule,
     AuthModule,
     TrainingModule,
-    MaterialModule
+    MaterialModule,
+    AuthRoutingModule
   ],
   providers: [UiService, AuthService, TrainingService],
   bootstrap: [AppComponent]

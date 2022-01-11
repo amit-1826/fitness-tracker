@@ -6,10 +6,8 @@ import {TrainingComponent} from "./training.component";
 import {
   CancelTrainingDialogComponent
 } from "./current-training/cancel-training-dialog/cancel-training-dialog.component";
-import { FlexLayoutModule } from "@angular/flex-layout";
-import { CommonModule } from "@angular/common";
-import { MaterialModule } from "../material.module";
-import { FormsModule } from "@angular/forms";
+import { SharedModule } from "../shared/shared.module";
+import {TrainingRoutingModule} from "./training-routing.module";
 
 @NgModule({
   declarations: [
@@ -17,13 +15,11 @@ import { FormsModule } from "@angular/forms";
     NewTrainingComponent,
     CurrentTrainingComponent,
     PastTrainingsComponent,
-    CancelTrainingDialogComponent
+    CancelTrainingDialogComponent,
   ],
   imports: [
-    FlexLayoutModule,
-    CommonModule,
-    MaterialModule,
-    FormsModule
+    SharedModule,
+    TrainingRoutingModule
   ]
 })
 export class TrainingModule {}
