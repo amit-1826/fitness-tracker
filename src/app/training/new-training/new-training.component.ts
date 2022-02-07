@@ -1,8 +1,6 @@
 import {Component, EventEmitter, OnDestroy, OnInit, Output} from '@angular/core';
 import {TrainingService} from "../training.service";
-import { AngularFirestore } from '@angular/fire/compat/firestore';
 import {Observable, Subscription} from 'rxjs';
-import { map } from 'rxjs/operators';
 import { ExerciseModel } from '../exercise.model';
 import { NgForm } from '@angular/forms';
 import {UiService} from "../../services/uiService";

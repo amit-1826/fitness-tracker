@@ -18,6 +18,7 @@ import { AuthService } from './auth/auth-service';
 import { TrainingService } from './training/training.service';
 import { FlexLayoutModule } from '@angular/flex-layout';
 import {AuthRoutingModule} from "./auth/auth-routing.module";
+import {AngularFireAuthModule} from "@angular/fire/compat/auth";
 
 @NgModule({
   declarations: [
@@ -33,6 +34,7 @@ import {AuthRoutingModule} from "./auth/auth-routing.module";
     FlexLayoutModule,
     AngularFireModule.initializeApp(environment.firebase),
     AngularFirestoreModule,
+    AngularFireAuthModule,
     AuthModule,
     TrainingModule,
     MaterialModule,
