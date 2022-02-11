@@ -17,8 +17,9 @@ import {MaterialModule} from "./material.module";
 import { AuthService } from './auth/auth-service';
 import { TrainingService } from './training/training.service';
 import { FlexLayoutModule } from '@angular/flex-layout';
-import {AuthRoutingModule} from "./auth/auth-routing.module";
 import {AngularFireAuthModule} from "@angular/fire/compat/auth";
+import { StoreModule } from '@ngrx/store';
+import { appReducer } from './app.reducer';
 
 @NgModule({
   declarations: [
@@ -38,7 +39,7 @@ import {AngularFireAuthModule} from "@angular/fire/compat/auth";
     AuthModule,
     TrainingModule,
     MaterialModule,
-    AuthRoutingModule
+    StoreModule.forRoot({ui: appReducer})
   ],
   providers: [UiService, AuthService, TrainingService],
   bootstrap: [AppComponent]

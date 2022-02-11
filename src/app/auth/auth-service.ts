@@ -5,6 +5,8 @@ import {Router} from "@angular/router";
 import {AngularFireAuth} from "@angular/fire/compat/auth";
 import {TrainingService} from "../training/training.service";
 import {UiService} from "../services/uiService";
+import { Store } from "@ngrx/store";
+import * as fromApp from '../app.reducer';
 
 @Injectable()
 export class AuthService {
@@ -14,6 +16,7 @@ export class AuthService {
 
   constructor(private router: Router, private angularFireAuth: AngularFireAuth,
               private trainingService: TrainingService,
+              private store: Store<{ui: fromApp.IState}>,
               private uiService: UiService) {
   }
 
