@@ -35,28 +35,29 @@ export class AuthService {
     })
   }
 
-  emitLoaderEvent(event: boolean) {
-    this.uiService.showLoaderEvent.next(event);
+  emitLoaderEvent(type: string) {
+    this.store.dispatch({type: type});
+    // this.uiService.showLoaderEvent.next(event);
   }
 
   login(authData: AuthData) {
-    this.emitLoaderEvent(true);
+    this.emitLoaderEvent('START_LOADING');
     const user = {
       email: authData.email,
       password: authData.password
     }
     this.angularFireAuth.signInWithEmailAndPassword(user.email, user.password)
       .then((result) => {
-        this.emitLoaderEvent(false);
+        this.emitLoaderEvent('STOP_LOADING');
       })
       .catch((error) => {
-        this.emitLoaderEvent(false);
+        this.emitLoaderEvent('STOP_LOADING');
         this.uiService.showSnackbar(error.message, undefined, 3000);
       });
   }
 
   register(authData: AuthData) {
-    this.emitLoaderEvent(true);
+    this.emitLoaderEvent('START_LOADING');
     const user = {
       email: authData.email,
       password: authData.password
@@ -64,10 +65,10 @@ export class AuthService {
 
     this.angularFireAuth.createUserWithEmailAndPassword(user.email, user.password)
       .then((result) => {
-        this.emitLoaderEvent(false);
+        this.emitLoaderEvent('STOP_LOADING');
       })
       .catch((error) => {
-        this.emitLoaderEvent(false);
+        this.emitLoaderEvent('STOP_LOADING');
         this.uiService.showSnackbar(error.message, undefined, 3000);
       });
   }

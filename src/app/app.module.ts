@@ -39,7 +39,7 @@ import { appReducer } from './app.reducer';
     AuthModule,
     TrainingModule,
     MaterialModule,
-    StoreModule.forRoot({ui: appReducer})
+    StoreModule.forRoot({ui:appReducer})
   ],
   providers: [UiService, AuthService, TrainingService],
   bootstrap: [AppComponent]
