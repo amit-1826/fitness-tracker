@@ -1,9 +1,7 @@
-import {Component, OnDestroy, OnInit} from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {AuthService} from "../auth-service";
 import {NgForm} from "@angular/forms";
-import {Router} from "@angular/router";
-import {UiService} from "../../services/uiService";
-import {Observable, Subscription} from "rxjs";
+import {Observable} from "rxjs";
 import * as fromApp from '../../app.reducer';
 import { Store } from '@ngrx/store';
 import { map } from 'rxjs/operators';
@@ -17,8 +15,7 @@ export class LoginComponent implements OnInit {
 
   isLoading$: Observable<boolean>;
   constructor(private authService: AuthService,
-              private store: Store<{ui: fromApp.IState}>,
-              private uiService: UiService) { }
+              private store: Store<{ui: fromApp.IState}>) { }
 
   ngOnInit(): void {
     this.isLoading$ = this.store.pipe(
