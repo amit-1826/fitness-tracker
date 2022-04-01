@@ -1,7 +1,10 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {AuthService} from "../auth-service";
 import {NgForm} from "@angular/forms";
-import {Router} from "@angular/router";
+import {Observable} from "rxjs";
+import * as fromApp from '../../app.reducer';
+import { Store } from '@ngrx/store';
+import { map } from 'rxjs/operators';
 
 @Component({
   selector: 'app-login',
@@ -10,10 +13,16 @@ import {Router} from "@angular/router";
 })
 export class LoginComponent implements OnInit {
 
+  isLoading$: Observable<boolean>;
   constructor(private authService: AuthService,
-              private router: Router) { }
+              private store: Store<{ui: fromApp.IState}>) { }
 
   ngOnInit(): void {
+    this.isLoading$ = this.store.pipe(
+      map((data) => {
+        return data.ui.isLoading;
+      })
+    )
   }
 
   onLogin(loginForm: NgForm) {

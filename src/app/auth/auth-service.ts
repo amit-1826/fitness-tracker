@@ -1,21 +1,23 @@
-import {User} from './user.model';
 import {AuthData} from "./auth.model";
 import {Subject} from "rxjs";
 import {Injectable} from "@angular/core";
 import {Router} from "@angular/router";
 import {AngularFireAuth} from "@angular/fire/compat/auth";
 import {TrainingService} from "../training/training.service";
+import {UiService} from "../services/uiService";
+import { Store } from "@ngrx/store";
+import * as fromApp from '../app.reducer';
 
-@Injectable({
-  providedIn: 'root'
-})
+@Injectable()
 export class AuthService {
 
   isAuthenticated: boolean = false;
   authChange: Subject<boolean> = new Subject<boolean>();
 
   constructor(private router: Router, private angularFireAuth: AngularFireAuth,
-              private trainingService: TrainingService) {
+              private trainingService: TrainingService,
+              private store: Store<{ui: fromApp.IState}>,
+              private uiService: UiService) {
   }
 
   initAuth() {
@@ -33,22 +35,29 @@ export class AuthService {
     })
   }
 
+  emitLoaderEvent(type: string) {
+    this.store.dispatch({type: type});
+    // this.uiService.showLoaderEvent.next(event);
+  }
+
   login(authData: AuthData) {
+    this.emitLoaderEvent('START_LOADING');
     const user = {
       email: authData.email,
       password: authData.password
     }
     this.angularFireAuth.signInWithEmailAndPassword(user.email, user.password)
       .then((result) => {
-        console.log(result);
+        this.emitLoaderEvent('STOP_LOADING');
       })
       .catch((error) => {
-        console.log(error);
+        this.emitLoaderEvent('STOP_LOADING');
+        this.uiService.showSnackbar(error.message, undefined, 3000);
       });
-
   }
 
   register(authData: AuthData) {
+    this.emitLoaderEvent('START_LOADING');
     const user = {
       email: authData.email,
       password: authData.password
@@ -56,10 +65,11 @@ export class AuthService {
 
     this.angularFireAuth.createUserWithEmailAndPassword(user.email, user.password)
       .then((result) => {
-        console.log(result);
+        this.emitLoaderEvent('STOP_LOADING');
       })
       .catch((error) => {
-        console.log(error);
+        this.emitLoaderEvent('STOP_LOADING');
+        this.uiService.showSnackbar(error.message, undefined, 3000);
       });
   }
 
