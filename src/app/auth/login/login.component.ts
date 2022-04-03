@@ -15,14 +15,10 @@ export class LoginComponent implements OnInit {
 
   isLoading$: Observable<boolean>;
   constructor(private authService: AuthService,
-              private store: Store<{ui: fromApp.IState}>) { }
+              private store: Store<fromApp.AppState>) { }
 
   ngOnInit(): void {
-    this.isLoading$ = this.store.pipe(
-      map((data) => {
-        return data.ui.isLoading;
-      })
-    )
+    this.isLoading$ = this.store.select(fromApp.getIsLoading);
   }
 
   onLogin(loginForm: NgForm) {

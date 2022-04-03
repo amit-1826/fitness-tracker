@@ -7,6 +7,7 @@ import {TrainingService} from "../training/training.service";
 import {UiService} from "../services/uiService";
 import { Store } from "@ngrx/store";
 import * as fromApp from '../app.reducer';
+import * as UIActions from '../shared/ui.actions';
 
 @Injectable()
 export class AuthService {
@@ -16,7 +17,7 @@ export class AuthService {
 
   constructor(private router: Router, private angularFireAuth: AngularFireAuth,
               private trainingService: TrainingService,
-              private store: Store<{ui: fromApp.IState}>,
+              private store: Store<fromApp.AppState>,
               private uiService: UiService) {
   }
 
@@ -35,8 +36,8 @@ export class AuthService {
     })
   }
 
-  emitLoaderEvent(type: string) {
-    this.store.dispatch({type: type});
+  emitLoaderEvent(type: 'START_LOADING' | 'STOP_LOADING') {
+    this.store.dispatch(type === 'START_LOADING' ? new UIActions.StartLoading() : new UIActions.StopLoading());
     // this.uiService.showLoaderEvent.next(event);
   }
 
