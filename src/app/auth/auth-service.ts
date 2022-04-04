@@ -8,12 +8,10 @@ import {UiService} from "../services/uiService";
 import { Store } from "@ngrx/store";
 import * as fromApp from '../app.reducer';
 import * as UIActions from '../shared/ui.actions';
+import { SetAuthenticated, SetUnAuthenticated } from "./auth.actions";
 
 @Injectable()
 export class AuthService {
-
-  isAuthenticated: boolean = false;
-  authChange: Subject<boolean> = new Subject<boolean>();
 
   constructor(private router: Router, private angularFireAuth: AngularFireAuth,
               private trainingService: TrainingService,
@@ -24,13 +22,11 @@ export class AuthService {
   initAuth() {
     this.angularFireAuth.authState.subscribe((user) => {
       if (user) {
-        this.isAuthenticated = true;
-        this.authChange.next(true);
+        this.store.dispatch(new SetAuthenticated())
         this.navigate('/training');
       } else {
         this.trainingService.cancelSubscriptions();
-        this.isAuthenticated = false;
-        this.authChange.next(false);
+        this.store.dispatch(new SetUnAuthenticated())
         this.navigate('login');
       }
     })
@@ -38,7 +34,6 @@ export class AuthService {
 
   emitLoaderEvent(type: 'START_LOADING' | 'STOP_LOADING') {
     this.store.dispatch(type === 'START_LOADING' ? new UIActions.StartLoading() : new UIActions.StopLoading());
-    // this.uiService.showLoaderEvent.next(event);
   }
 
   login(authData: AuthData) {
@@ -72,10 +67,6 @@ export class AuthService {
         this.emitLoaderEvent('STOP_LOADING');
         this.uiService.showSnackbar(error.message, undefined, 3000);
       });
-  }
-
-  isAuth() {
-    return this.isAuthenticated;
   }
 
   logout() {
