@@ -1,30 +1,23 @@
-import {Component, Input, OnDestroy, OnInit} from '@angular/core';
+import {Component, Input, OnInit} from '@angular/core';
 import {MatSidenav} from "@angular/material/sidenav";
-import {Subscription} from "rxjs";
+import { Store } from '@ngrx/store';
+import {Observable} from "rxjs";
 import {AuthService} from "../../auth/auth-service";
+import * as fromApp from '../../app.reducer';
 
 @Component({
   selector: 'app-sidenav',
   templateUrl: './sidenav.component.html',
   styleUrls: ['./sidenav.component.css']
 })
-export class SidenavComponent implements OnInit, OnDestroy {
+export class SidenavComponent implements OnInit {
 
   @Input() sidebar: MatSidenav;
-  isAuth = false;
-  authSubscription: Subscription;
-  constructor(private authService: AuthService) { }
+  isAuth$: Observable<boolean>;
+  constructor(private authService: AuthService, private store: Store<fromApp.AppState>) { }
 
   ngOnInit(): void {
-    this.authSubscription = this.authService.authChange.subscribe(isAuthenticated => {
-      this.isAuth = isAuthenticated;
-    });
-  }
-
-  ngOnDestroy() {
-    if (this.authSubscription) {
-      this.authSubscription.unsubscribe();
-    }
+    this.isAuth$ = this.store.select(fromApp.getIsAuthenticated);
   }
 
   onLogout() {
