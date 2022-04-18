@@ -20,10 +20,11 @@ export class SetFinishedTrainings implements Action {
 
 export class StartTraining implements Action {
     readonly type = START_TRAINING;
+    constructor(public payload: ExerciseModel) {}
 }
 
 export class StopTraining implements Action {
     readonly type = STOP_TRAINING;
 }
 
-export type AuthActions = SetAvailableTrainings | SetFinishedTrainings | StartTraining | StopTraining;
+export type TrainingActions = SetAvailableTrainings | SetFinishedTrainings | StartTraining | StopTraining;

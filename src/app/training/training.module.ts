@@ -8,6 +8,8 @@ import {
 } from "./current-training/cancel-training-dialog/cancel-training-dialog.component";
 import { SharedModule } from "../shared/shared.module";
 import {TrainingRoutingModule} from "./training-routing.module";
+import { StoreModule } from "@ngrx/store";
+import { trainingReducer } from "./training.reducer";
 
 @NgModule({
   declarations: [
@@ -19,7 +21,8 @@ import {TrainingRoutingModule} from "./training-routing.module";
   ],
   imports: [
     SharedModule,
-    TrainingRoutingModule
+    TrainingRoutingModule,
+    StoreModule.forFeature('training', trainingReducer)
   ]
 })
 export class TrainingModule {}
